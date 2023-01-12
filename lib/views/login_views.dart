@@ -1,10 +1,7 @@
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../firebase_options.dart';
+
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -29,10 +26,68 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
   
-  @override
+@override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Login Page')
+      ),
+      body : Column(
+        children: [
+    
+          TextField(
+            controller: _email,
+            enableSuggestions: false,
+            autocorrect: false,
+            keyboardType: TextInputType.emailAddress,
+            decoration : const InputDecoration(
+              hintText : 'Enter Your Email Here',
+            ),
+          ),
+          TextField(
+            controller: _password,
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            decoration : const InputDecoration(
+              hintText : 'Enter Your Password Here',
+            ))
+          ,
+          TextButton(
+              onPressed: ()async {
+                final email = _email.text;
+                final password = _password.text;
+                
+                try  {
+                  final userCredential = await FirebaseAuth.instance.
+                  signInWithEmailAndPassword(
+                  email: email, 
+                  password: password
+                  );
+                  print(userCredential);
+                } 
+                on FirebaseAuthException catch (e){
+                  if (e.code == 'user-not-found'){
+                    print('User Not Found');
+                    }
+    
+                  else if (e.code == 'wrong-password'){
+                    print('Wrong Password');
+                  }
+                  };
+    
+              },
+              child: const Text('Login'),
+        
+            ),
+            TextButton(onPressed: (){
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/register/',
+               (route) => false
+               );
+            }, child:
+             const Text('Not registered yet?, Register Here!'))
+        ],
+      ),
+    );
   }
-  
 }
