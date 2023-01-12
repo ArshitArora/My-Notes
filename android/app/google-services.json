@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "847726951144",
+    "project_id": "privatenotes-arshit",
+    "storage_bucket": "privatenotes-arshit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847726951144:android:bbe7c33a442d70df76675d",
+        "android_client_info": {
+          "package_name": "com.hello.privatenotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847726951144-lqudr694upkq1up1943d2c6ne4m782mp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5zdNNF3vY9DjXBY_K-l4WyZdR8RAJwdc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847726951144-lqudr694upkq1up1943d2c6ne4m782mp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
