@@ -6,15 +6,16 @@ import 'package:privatenotes/views/login_views.dart';
 import 'package:privatenotes/views/register_view.dart';
 import 'firebase_options.dart';
 
-void main() {
+void main() async {
 WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp();
   runApp(MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
   
-        primarySwatch: Colors.brown,
+        primarySwatch: Colors.green,
       ),
-      home: const HomePage(),
+      home: const LoginView(),
       routes: {
         '/login/': (context) => const LoginView(),
         '/register/': (context) => const RegisterView()
@@ -27,7 +28,8 @@ class HomePage extends StatelessWidget {
 
 @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder (
+        
         future: Firebase.initializeApp(
                    options: DefaultFirebaseOptions.currentPlatform,
                   ),
@@ -39,7 +41,7 @@ class HomePage extends StatelessWidget {
             final user = FirebaseAuth.instance.currentUser;
             if (user!=null){
               if (user.emailVerified){
-                return const Text('Email is Verified');
+                return const Text('Done');
               }
               else {
                 return const VerifyEmailView();
@@ -55,4 +57,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
 
