@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:privatenotes/views/login_views.dart';
 import 'package:privatenotes/views/register_view.dart';
 import 'firebase_options.dart';
-import 'dart:developer' as devtools show log;
 
 void main() async {
 WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +18,8 @@ await Firebase.initializeApp();
       home: const HomePage(),
       routes: {
         '/login/': (context) => const LoginView(),
-        '/register/': (context) => const RegisterView()
+        '/register/': (context) => const RegisterView(),
+        '/notes':(context) => const NoteView(),
       },
     ));
 }
@@ -105,7 +105,7 @@ class _NoteViewState extends State<NoteView> {
         ],
       ),
       body: Column(children: [
-        Text('Hello World')
+        const Text('Hello World')
       ]
       ),
     );
