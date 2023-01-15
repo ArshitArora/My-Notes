@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
 import 'package:privatenotes/constants/routes.dart';
-
 import '../utilities/show_error_dailog.dart';
 
 
@@ -65,12 +62,14 @@ class _RegisterViewState extends State<RegisterView> {
                     final password = _password.text;
                     
                     try  {
-                      final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-   
+                       await FirebaseAuth.instance.createUserWithEmailAndPassword(
                       email: email, 
                       password: password
                       );
-                      devtools.log(userCredential.toString());
+                      final user = FirebaseAuth.instance.currentUser;
+                      await user?.sendEmailVerification();
+                      Navigator.of(context).pushNamed(verifyEmailRoute);
+
                     } 
                     on FirebaseAuthException catch (e){
                        if (e.code == 'email-already-in-use'){
@@ -79,15 +78,22 @@ class _RegisterViewState extends State<RegisterView> {
                       }
                       else if (e.code == 'weak-password'){
                         await showeErrorDialog(
-                      context, 'Weak Password, Try Another One (char length = min 7');
+                      context, 'Weak Password, Try Another One (char length min 7');
                         }
                       else if (e.code == 'invalid-email'){
                         await showeErrorDialog(
                       context, 'Invalid Email');
+                      } 
+                      else {
+                        await showeErrorDialog(
+                          context,
+                           'Error ${e.code}');
                       }
-
                       }
-   
+                      catch (e){
+                        await showeErrorDialog(context,
+                         e.toString());
+                      }
                   },
                   child: const Text('Register'),
             

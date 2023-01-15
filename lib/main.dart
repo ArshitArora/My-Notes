@@ -16,11 +16,12 @@ await Firebase.initializeApp();
   
         primarySwatch: Colors.green,
       ),
-      home: const HomePage(),
+      home: const LoginView(),
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
         notesRoute:(context) => const NoteView(),
+        verifyEmailRoute:(context) => const VerifyEmailView()
       },
     ));
 }
