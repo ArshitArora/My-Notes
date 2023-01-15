@@ -16,7 +16,7 @@ await Firebase.initializeApp();
   
         primarySwatch: Colors.green,
       ),
-      home: const LoginView(),
+      home: const HomePage(),
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
