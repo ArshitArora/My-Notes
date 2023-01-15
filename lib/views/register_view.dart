@@ -4,6 +4,8 @@ import 'dart:developer' as devtools show log;
 
 import 'package:privatenotes/constants/routes.dart';
 
+import '../utilities/show_error_dailog.dart';
+
 
 class RegisterView extends StatefulWidget {
   
@@ -29,6 +31,7 @@ class _RegisterViewState extends State<RegisterView> {
     _password.dispose();
     super.dispose();
   }
+
   
   @override
   Widget build(BuildContext context) {
@@ -70,15 +73,19 @@ class _RegisterViewState extends State<RegisterView> {
                       devtools.log(userCredential.toString());
                     } 
                     on FirebaseAuthException catch (e){
-                      if (e.code == 'weak-password'){
-                        devtools.log('Weak Password');
+                       if (e.code == 'email-already-in-use'){
+                        await showeErrorDialog(
+                      context, 'Email alreeady in use, Pleae Enter Another Email.');
+                      }
+                      else if (e.code == 'weak-password'){
+                        await showeErrorDialog(
+                      context, 'Weak Password, Try Another One (char length = min 7');
                         }
                       else if (e.code == 'invalid-email'){
-                        devtools.log('Invalid email please re-enter');
+                        await showeErrorDialog(
+                      context, 'Invalid Email');
                       }
-                      else if (e.code == 'email-already-in-use'){
-                        devtools.log('Email already in use');
-                      }
+
                       }
    
                   },
