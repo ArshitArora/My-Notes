@@ -2,12 +2,14 @@
 import 'package:privatenotes/service/auth/auth_exception.dart';
 import 'package:privatenotes/service/auth/auth_user.dart';
 import 'package:privatenotes/service/auth/auth_provider.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../firebase_options.dart';
 
   // show FirebaseAuth, FirebaseAuthException;
 
 class FirebaseAuthProvider implements AuthProvider {
+  get firebase => null;
+
   @override
   Future<AuthUser> createUser({
     required String email, 
@@ -107,7 +109,12 @@ class FirebaseAuthProvider implements AuthProvider {
   }
   
   @override
-  // TODO: implement user
   AuthUser? get user => throw UnimplementedError();
+  
+  @override
+  Future<void> initialize() async {
+    await firebase.initialize();
+      options: DefaultFirebaseOptions.currentPlatform;
+  }
 
 }
