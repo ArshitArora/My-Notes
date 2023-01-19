@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:privatenotes/constants/routes.dart';
 import 'package:privatenotes/service/auth/auth_exception.dart';
@@ -20,8 +19,6 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void initState() {
-    Firebase.initializeApp();
-
     _email = TextEditingController();
     _password = TextEditingController();
     super.initState();
