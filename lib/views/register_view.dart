@@ -1,6 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:privatenotes/constants/routes.dart';
+import 'package:privatenotes/service/auth/auth_exception.dart';
+import 'package:privatenotes/service/auth/auth_service.dart';
 import '../utilities/show_error_dailog.dart';
 
 
@@ -18,6 +20,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void initState() {
+    Firebase.initializeApp();
+
     _email = TextEditingController();
     _password = TextEditingController();
     super.initState();
@@ -62,49 +66,45 @@ class _RegisterViewState extends State<RegisterView> {
                     final password = _password.text;
                     
                     try  {
-                       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: email, 
-                      password: password
-                      );
-                      final user = FirebaseAuth.instance.currentUser;
-                      await user?.sendEmailVerification();
-                      Navigator.of(context).pushNamed(verifyEmailRoute);
+                      await AuthService.firebase().createUser(
+                       email: email,
+                       password: password
+                     );
+                          
+                    AuthService.firebase().sendEmailVerification();
+                    Navigator.of(context).pushNamed(verifyEmailRoute);
 
                     } 
-                    on FirebaseAuthException catch (e){
-                       if (e.code == 'email-already-in-use'){
-                        await showeErrorDialog(
-                      context, 'Email alreeady in use, Pleae Enter Another Email.');
-                      }
-                      else if (e.code == 'weak-password'){
-                        await showeErrorDialog(
-                      context, 'Weak Password, Try Another One (char length min 7');
+                    on WeakPasswordFoundException{
+                      await showeErrorDialog(
+                      context, 'Weak Password, Try Another One (char length min 7'
+                      );
                         }
-                      else if (e.code == 'invalid-email'){
-                        await showeErrorDialog(
+
+                    on EmailAlreadyInUseFoundException{
+                      await showeErrorDialog(
+                      context, 'Email alreeady in use, Pleae Enter Another Email.'
+                      );
+                    }
+                    on InvalidEmailException {
+                      await showeErrorDialog(
                       context, 'Invalid Email');
-                      } 
-                      else {
-                        await showeErrorDialog(
-                          context,
-                           'Error ${e.code}');
-                      }
-                      }
-                      catch (e){
-                        await showeErrorDialog(context,
-                         e.toString());
-                      }
-                  },
-                  child: const Text('Register'),
-            
-                ),
+                    }
+                    on GenericAuthException {
+                      await showeErrorDialog(context,
+                         'Authentication Error');
+                    }
+
+
                 TextButton(onPressed: (){
                   Navigator.of(context).pushNamedAndRemoveUntil(
                 loginRoute,
                (route) => false
                );
-                }, child: const Text('Alredy Registed? Go back to the Login Page'))
-          
+                }, child: const Text('okay'), 
+                );
+                  }, child: const Text('Alredy Registed? Go back to the Login Page')
+              )
             ],
           ),
    );
